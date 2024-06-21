@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Everyday News</title>
+    <link rel="shortcut icon" href="images/logo/favicon.png" type="image/x-icon">
+    <link rel="stylesheet" href="assets/css/custom-css.css">
+    <script src="https://kit.fontawesome.com/eacd88b6a6.js" crossorigin="anonymous"></script>
+</head>
+
+<body>
+    <header>
+        <div class="news__logo-notification">
+            <div class="logo__container">
+                <p>Global<span>Pulse</span></p>
+            </div>
+        </div>
+        <div class="notification__container">
+            <div class="input__container">
+                <input type="search" id="keyword-search" placeholder="Search a keyword" autocomplete="off">
+                <i class="fa-solid fa-magnifying-glass"></i>
+            </div>
+            <button class="sort__button">
+                <p>Filter</p>
+                <i class="fa-solid fa-arrow-down"></i>
+            </button>
+        </div>
+        <ul class="sort__choices unmount">
+            <li class="sort__choices-item active">International</li>
+            <li>Locale</li>
+        </ul>
+        <!-- <div class="news__source">
+            <img src="images/news-outlets/cnn.png" id="cnn" alt="no image">
+            <img src="images/news-outlets/bbc.png" id="bbc" alt="no image">
+            <img src="images/news-outlets/the-guardian.png" id="the-guardian" alt="no image">
+            <img src="images/news-outlets/new-york-times.png" id="new-york-times" alt="no image">
+            <img src="images/news-outlets/fox-news.png" id="fox-news" alt="no image">
+        </div> -->
+    </header>
+    <main>
+        <div class="headlines__container">
+            <p>Breaking News</p>
+            <div class="headline__card-container">
+                <!-- Dynamic Content -->
+            </div>
+        </div>
+        <div class="default__news">
+            <ul class="news__category-container">
+                <li class="news__category active"><a href="#top-news">Top News</a></li>
+                <li class="news__category"><a href="#sport">Sport</a></li>
+                <li class="news__category"><a href="#politics">Politics</a></li>
+                <li class="news__category"><a href="#health">Health</a></li>
+                <li class="news__category"><a href="#education">Education</a></li>
+                <li class="news__category"><a href="#science">Science</a></li>
+                <li class="news__category"><a href="#technology">Technology</a></li>
+            </ul>
+            <div class="default__news-container">
+                <!-- Dynamic Content -->
+            </div>
+        </div>
+    </main>
+
+    <template id="headline__card">
+        <div class="headline__card">
+            <div class="headline__details">
+                <div class="headline__description">
+                    <a>Sen. Warren warns Powell against weakening banking regulations: 'Do your job</a>
+                </div>
+                <div class="headline__source">
+                    <img><a>CNN News</a>
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <template id="default__news-card">
+        <div class="default__news-card">
+            <div class="default__news-header"></div>
+            <div class="default__news-body">
+                <div class="default__news-headline">
+                    <a>Premier League fixtures: When are 2024-25's biggest games?</a>
+                </div>
+                <div class="default__news-source">
+                    <img><a>CNN News</a>
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <template id="empty__notice">
+        <div class="empty__notice">
+            <p>Oops! No News Found 📰</p>
+            <p>🌟 Try searching for something different. Who knows what interesting stories you might uncover?</p>
+        </div>
+    </template>
+
+    <template id="news__template">
+        <div class="headlines__container">
+            <p>Breaking News</p>
+            <div class="headline__card-container">
+                <!-- Dynamic Content -->
+            </div>
+        </div>
+        <div class="default__news">
+            <ul class="news__category-container">
+                <li class="news__category active"><a href="#top-news">Top News</a></li>
+                <li class="news__category"><a href="#sport">Sport</a></li>
+                <li class="news__category"><a href="#politics">Politics</a></li>
+                <li class="news__category"><a href="#health">Health</a></li>
+                <li class="news__category"><a href="#education">Education</a></li>
+                <li class="news__category"><a href="#science">Science</a></li>
+                <li class="news__category"><a href="#technology">Technology</a></li>
+            </ul>
+            <div class="default__news-container">
+                <!-- Dynamic Content -->
+            </div>
+        </div>
+
+    </template>
+
+    <script src="assets/js/custom-js.js"></script>
+
+</body>
+
+</html>
