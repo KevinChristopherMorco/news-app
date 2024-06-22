@@ -12,12 +12,13 @@ const date = new Date()
 const serverTime = new Date(date.toISOString())
 
 
-const fetchData = (e, userQuery) => {
+const fetchData = (e, userQuery,filter) => {
     const currentURL = localStorage.getItem('currentURL');
     const previousURL = localStorage.getItem('previousURL');
     const apiData = localStorage.getItem('apiData');
     const currentMinutes = serverTime.getMinutes();
-    console.log(userQuery)
+    const locale = localStorage.getItem('locale')
+    console.log(userQuery,filter)
 
     const data = localStorage.getItem('apiData')
     renderData(JSON.parse(data))
@@ -28,7 +29,8 @@ const fetchData = (e, userQuery) => {
     //     renderData(JSON.parse(data))
     //     return;
     // }
-    // fetch(`https://newsdata.io/api/1/latest?apikey=pub_467909f9f75c0eac02b1dd15de92ddcfd29e4&country=ph&language=en&q=${userQuery === undefined ? 'philippines' : userQuery}`).then(response => response.json()).then(data => {
+    // fetch(`https://newsdata.io/api/1/latest?apikey=pub_467909f9f75c0eac02b1dd15de92ddcfd29e4&country=${filter === undefined ? locale : filter}&language=en&q=${userQuery === undefined ? 'philippines' : userQuery}`).then(response => response.json()).then(data => {
+    //    console.log(`https://newsdata.io/api/1/latest?apikey=pub_467909f9f75c0eac02b1dd15de92ddcfd29e4&country=${filter === undefined ? locale : filter}&language=en&q=${userQuery === undefined ? 'philippines' : userQuery}`)
     //     const storeData = data
     //     localStorage.setItem('apiData', JSON.stringify(storeData))
     //     renderData(data)
@@ -39,11 +41,27 @@ const renderData = (data) => {
     if (emptyResults(data)) {
         return;
     }
-    const results = data.results
-    console.log(results)
-    results.slice(0, 3).forEach(result => {
+
+    let headlineSlice
+    let defaultSlice
+
+    if (data.results.length < 5) {
+        headlineSlice = data.results.slice(0, 1)
+        defaultSlice = data.results.slice(1)
+    } else {
+        headlineSlice = data.results.slice(0, 3)
+        defaultSlice = data.results.slice(3)
+    }
+
+    const headlineResults = headlineSlice
+    const defaultResults = defaultSlice
+
+    removeElements(headlineContainer)
+    removeElements(defaultContainer)
+
+    headlineResults.forEach(result => {
         const cardClone = headlineCard.content.cloneNode(true)
-        cardClone.querySelector('.headline__card').style.cssText = `background:linear-gradient(180deg, rgba(0, 0, 0, 0), rgba(0, 0, 0, 1)), url(${result.image_url != null ? result.image_url : `images/defaults/flag.jpg`}); background-size: cover;
+        cardClone.querySelector('.headline__card').style.cssText = `background:linear-gradient(180deg, rgba(0, 0, 0, 0), rgba(0, 0, 0, 1)), url(${result.image_url != null ? result.image_url : `images/defaults/no-image.jpg`}); background-size: cover;
         background-repeat: no-repeat;`
         cardClone.querySelector('.headline__description > a').textContent = result.title
         cardClone.querySelector('.headline__description > a').setAttribute('href', result.link)
@@ -53,10 +71,9 @@ const renderData = (data) => {
         headlineContainer.appendChild(cardClone)
     })
 
-    const defaultResults = data.results
-    defaultResults.slice(4).forEach(result => {
+    defaultResults.forEach(result => {
         const cardClone = defaultCard.content.cloneNode(true)
-        cardClone.querySelector('.default__news-header').style.cssText = `background:linear-gradient(180deg, rgba(0, 0, 0, 0), rgba(0, 0, 0, 1)),url(${result.image_url != null ? result.image_url : `images/defaults/flag.jpg`}); background-size: cover;
+        cardClone.querySelector('.default__news-header').style.cssText = `background:linear-gradient(180deg, rgba(0, 0, 0, 0), rgba(0, 0, 0, 1)),url(${result.image_url != null ? result.image_url : `images/defaults/no-image.jpg`}); background-size: cover;
         background-repeat: no-repeat;`
         cardClone.querySelector('.default__news-headline>a').textContent = result.title
         cardClone.querySelector('.default__news-headline > a').setAttribute('href', result.link)
@@ -69,8 +86,6 @@ const renderData = (data) => {
     })
 }
 
-keywordInput.addEventListener('keydown', (e) => getSearchResults(e))
-
 const getSearchResults = (e) => {
     if (e.target.value === '') {
         return
@@ -80,45 +95,34 @@ const getSearchResults = (e) => {
             x.remove()
         })
         const userQuery = keywordInput.value
-        setURL(userQuery, window.location.hash.slice(1))
-        handleURL()
+        handleURL(e, userQuery, window.location.hash.slice(1))
         fetchData(e, userQuery)
     }
-
 }
 
-sortBtn.addEventListener('click', (e) => {
-    sortChoices.classList.toggle('unmount')
-})
+keywordInput.addEventListener('keydown', (e) => getSearchResults(e))
 
-const handleURL = (e) => {
-    const currentURL = window.location.hash.slice(1)
+const handleURL = (e, currentURL, previousURL) => {
+    console.log(currentURL, previousURL)
     const resultURL = currentURL != '' ? currentURL : 'philippines'
     localStorage.setItem('currentURL', resultURL)
-}
 
-window.addEventListener('hashchange', (e) => handleURL(e))
-// window.addEventListener('load', (e) => handleURL(e))
-
-
-const setURL = (data, previousURL) => {
     localStorage.setItem('previousURL', previousURL === '' ? 'philippines' : previousURL)
     if (window.location.hash) {
         window.location.hash = ''
     }
-    window.location.hash = data
+    window.location.hash = currentURL
 }
 
 const getURL = (e) => {
     const userQuery = localStorage.getItem('currentURL')
+    console.log(userQuery)
     Array.from(defaultContainer.children).forEach(x => {
         x.remove()
     })
     fetchData(e, userQuery)
 }
-window.addEventListener('hashchange', (e) => getURL(e))
 window.addEventListener('load', (e) => getURL(e))
-
 
 const emptyResults = (data) => {
     if (document.querySelector('.empty__notice') != null) {
@@ -146,14 +150,65 @@ const handleCategory = (e) => {
             x.classList.remove('active')
         })
         e.target.closest('li').classList.add('active')
+
+        const previousURL = window.location.hash.slice(1)
+        setTimeout(() => {
+            const currentURL = window.location.hash.slice(1)
+            handleURL(e, currentURL, previousURL)
+            fetchData(e, currentURL)
+            localStorage.setItem('activeCategory', currentURL)
+        }, 100)
     }
 }
 categoryList.addEventListener('click', (e) => handleCategory(e))
 
-const handleOutlets = (e) => {
-    console.log(e.target.id)
+const removeElements = (element) => {
+    if (Array.from(element.children).length > 0) {
+        Array.from(element.children).forEach(x => x.remove())
+    }
 }
+sortBtn.addEventListener('click', (e) => {
+    sortChoices.classList.toggle('unmount')
+})
 
+const choicesContainer = document.querySelector('.sort__choices')
+
+
+const setElementState = () => {
+    const category = localStorage.getItem('activeCategory')
+
+    Array.from(categoryList.children).forEach(element => {
+        element.classList.remove('active')
+        if (element.querySelector('a').hash === `#${category}`) {
+            element.classList.add('active')
+        }
+    })
+
+    const locale = localStorage.getItem('locale')
+    Array.from(choicesContainer.children).forEach(element => {
+        element.classList.remove('active')
+        if (element.dataset.value === locale) {
+            element.classList.add('active')
+        }
+    })
+}
+window.addEventListener('load', setElementState)
+
+const handleNewsLocale = (e) => {
+    const userQuery = localStorage.getItem('currentURL')
+    const choices = document.querySelectorAll('.sort__choices > li')
+
+    if(e.target.tagName === 'LI'){
+        choices.forEach(x=> {
+            x.classList.remove('active')
+        })
+        e.target.classList.add('active')
+    }
+    const locale = Array.from(choices).find(x => x.classList.contains('active'));
+    localStorage.setItem('locale',locale.dataset.value)
+    fetchData(e,userQuery,locale.dataset.value)
+}
+choicesContainer.addEventListener('click', (e)=> handleNewsLocale(e))
 
 
 
