@@ -1,4 +1,6 @@
-import { categoryList,sortBtn } from "./global-dom.js"
+import { fetchData } from "./fetch-api.js"
+import { categoryList, sortBtn } from "./global-dom.js"
+import { handleURL } from "./url.js"
 
 export const emptyResults = (data) => {
     if (document.querySelector('.empty__notice') != null) {
@@ -16,7 +18,7 @@ export const emptyResults = (data) => {
         return true
     } else {
         const mainContainer = document.querySelector('main')
-        Array.from(mainContainer.children).forEach(x => x.style.display = 'block')
+        Array.from(mainContainer.children).forEach(x => x.removeAttribute('style'))
     }
 }
 
@@ -86,3 +88,81 @@ const handleNewsLocale = (e) => {
     fetchData(e, userQuery, locale.dataset.value)
 }
 choicesContainer.addEventListener('click', (e) => handleNewsLocale(e))
+
+const arrowContainer = document.querySelector('.arrow-container')
+let currentIndex = 0
+const arrows = (e) => {
+    const container = document.querySelector('.headline__card-container')
+    const cards = container.querySelectorAll('.headline__card');
+    if (e.target.tagName === 'I' && e.target.classList.contains('fa-arrow-right')) {
+        if (currentIndex >= cards.length - 1) {
+            return; // If we've reached the end of cards, exit
+        }
+        console.log(currentIndex)
+
+        const card = cards[currentIndex];
+        let sum = card.offsetLeft;
+        if (currentIndex === 0) {
+            sum += cards[currentIndex + 1].offsetLeft;
+        }
+
+        if (currentIndex < cards.length - 1) {
+            sum += cards[currentIndex].offsetLeft;
+        }
+
+        container.scrollTo({
+            left: sum,
+            behavior: 'smooth'
+        });
+        currentIndex++;
+
+    }
+
+    if (e.target.tagName === 'I' && e.target.classList.contains('fa-arrow-left')) {
+        if (currentIndex === 0) {
+            return; // If we've reached the end of cards, exit
+        }
+
+        const card = cards[currentIndex];
+        let diff = card.offsetLeft;
+
+        if (currentIndex > 1) {
+            diff = cards[currentIndex].offsetLeft - cards[currentIndex - 1].offsetLeft;
+        }
+
+        if (currentIndex === 1) {
+            diff = cards[currentIndex].offsetLeft - cards[currentIndex + 1].offsetLeft;
+        }
+
+        container.scrollTo({
+            left: diff,
+            behavior: 'smooth'
+        });
+        currentIndex--;
+        console.log(currentIndex)
+
+    }
+
+    // if (e.target.tagName === 'I') {
+    //     if (currentIndex >= cards.length - 1) {
+    //         return; // If we've reached the end of cards, exit
+    //     }
+
+    //     const card = cards[currentIndex];
+    //     let sum = card.offsetLeft;
+    //     if(currentIndex === 0){
+    //         sum += cards[currentIndex + 1].offsetLeft;
+    //     }
+
+    //     if (currentIndex < cards.length - 1) {
+    //         sum += cards[currentIndex].offsetLeft;
+    //     }
+
+    //     container.scrollTo({
+    //         left: sum,
+    //         behavior: 'smooth'
+    //     });
+    //     currentIndex++;
+    // }
+}
+arrowContainer.addEventListener('click', (e) => arrows(e))
