@@ -1,4 +1,4 @@
-import { serverTime } from "./global-dom.js";
+import { serverTime,apiTemplate } from "./global-dom.js";
 import { renderData } from "./render-data.js";
 
 export const fetchData = (e, userQuery, filter) => {
@@ -19,9 +19,19 @@ export const fetchData = (e, userQuery, filter) => {
         renderData(JSON.parse(data))
         return;
     }
-    fetch(`https://newsdata.io/api/1/latest?apikey=pub_467909f9f75c0eac02b1dd15de92ddcfd29e4&country=${filter === undefined ? locale : filter}&language=en&q=${userQuery === undefined ? 'philippines' : userQuery}`).then(response => response.json()).then(data => {
+    fetch(`https://newsdata.io/api/1/latest?apikey=pub_467909f9f75c0eac02b1dd15de92ddcfd29e4&country=${filter === undefined ? locale : filter}&language=en&q=${userQuery === undefined ? 'philippines' : userQuery}`).then(response =>{
+        if(response.status === 429){
+            const mainContainer = document.querySelector('main')
+            if (document.querySelector('.api__notice') != null) {
+                document.querySelector('.api__notice').remove()
+            }
+            const apiNotice = apiTemplate.content.cloneNode(true)
+            mainContainer.appendChild(apiNotice)
+            return;
+        }
+        return response.json()
+    }).then(data => {
         const storeData = data
-        console.log(`https://newsdata.io/api/1/latest?apikey=pub_467909f9f75c0eac02b1dd15de92ddcfd29e4&country=${filter === undefined ? locale : filter}&language=en&q=${userQuery === undefined ? 'philippines' : userQuery}`)
         localStorage.setItem('apiData', JSON.stringify(storeData))
         renderData(data)
     })
