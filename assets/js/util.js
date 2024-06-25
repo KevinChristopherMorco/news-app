@@ -96,12 +96,12 @@ const arrows = (e) => {
     const cards = container.querySelectorAll('.headline__card');
     if (e.target.tagName === 'I' && e.target.classList.contains('fa-arrow-right')) {
         if (currentIndex >= cards.length - 1) {
-            return; // If we've reached the end of cards, exit
+            return;
         }
-        console.log(currentIndex)
 
         const card = cards[currentIndex];
         let sum = card.offsetLeft;
+        
         if (currentIndex === 0) {
             sum += cards[currentIndex + 1].offsetLeft;
         }
@@ -114,8 +114,8 @@ const arrows = (e) => {
             left: sum,
             behavior: 'smooth'
         });
-        currentIndex++;
 
+        currentIndex++;
     }
 
     if (e.target.tagName === 'I' && e.target.classList.contains('fa-arrow-left')) {
@@ -140,29 +140,6 @@ const arrows = (e) => {
         });
         currentIndex--;
         console.log(currentIndex)
-
     }
-
-    // if (e.target.tagName === 'I') {
-    //     if (currentIndex >= cards.length - 1) {
-    //         return; // If we've reached the end of cards, exit
-    //     }
-
-    //     const card = cards[currentIndex];
-    //     let sum = card.offsetLeft;
-    //     if(currentIndex === 0){
-    //         sum += cards[currentIndex + 1].offsetLeft;
-    //     }
-
-    //     if (currentIndex < cards.length - 1) {
-    //         sum += cards[currentIndex].offsetLeft;
-    //     }
-
-    //     container.scrollTo({
-    //         left: sum,
-    //         behavior: 'smooth'
-    //     });
-    //     currentIndex++;
-    // }
 }
 arrowContainer.addEventListener('click', (e) => arrows(e))

@@ -6,6 +6,8 @@
     --gray: hsl(0, 0%, 68%);
     --light-gray: hsl(0, 0%, 99%);
     --lightest-gray: hsl(240, 4%, 95%);
+    --footer: hsl(274, 82%, 60%);
+
 
     --font-family: "Merriweather Sans", sans-serif;
 
@@ -47,10 +49,11 @@ header .news__logo-notification {
     align-items: center;
 }
 
-header .logo__container>p {
+header .logo__container>a {
     font-size: 1.5rem;
     font-weight: 700;
     font-style: oblique;
+    color: var(--black);
 }
 
 header .notification__container {
@@ -71,6 +74,10 @@ header .notification__container .input__container>input {
     border: 1px solid var(--gray);
     border-radius: 0.5rem 0 0 0.5rem;
     background-color: var(--light-gray);
+}
+
+header .notification__container .input__container>input:focus {
+    outline: 1px solid var(--black);
 }
 
 header .notification__container .input__container>i {
@@ -216,6 +223,7 @@ main {
     background: linear-gradient(180deg, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.5)), url('https://image.cnbcfm.com/api/v1/image/107218552-16802749492023-03-31t145620z_1081608619_rc2250aepzz8_rtrmadp_0_usa-stocks.jpeg?v=1680278452&w=1920&h=1080');
     background-size: cover;
     background-repeat: no-repeat;
+    background-position: center;
     border-radius: 1rem;
 }
 
@@ -326,6 +334,7 @@ main {
     background: url('https://a3.espncdn.com/combiner/i?img=%2Fphoto%2F2024%2F0618%2Fr1347208_1296x729_16%2D9.jpg');
     background-size: 100% 100%;
     background-repeat: no-repeat;
+    background-position: center;
     border-radius: 1rem;
 }
 
@@ -390,6 +399,59 @@ main {
     font-style: oblique;
 }
 
+footer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--footer);
+}
+
+.footer__container {
+    padding: 1.5rem;
+    text-align: center;
+    color: var(--white);
+}
+
+.footer__container .footer__text-container>p {
+    padding: 0.5rem 0;
+}
+
+.footer__container .footer__text-container>p:nth-of-type(1) {
+    font-size: 1.25rem;
+    font-weight: 500;
+    font-style: oblique;
+}
+
+.footer__container .footer__text-container>p:nth-of-type(2) {
+    font-size: 1rem;
+}
+
+
+.footer__container .icon__container {
+    padding: 1rem 0;
+}
+
+.footer__container .icon__container>ul {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.footer__container .icon__container>ul>li {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    list-style: none;
+}
+
+.footer__container .icon__container>ul>li>a {
+    color: var(--white)
+}
+
+.footer__container .icon__container>ul>li>a>i {
+    font-size: 1.5rem;
+}
+
 @media only screen and (min-width:700px) {
 
     main,
@@ -411,7 +473,15 @@ main {
         left: 5%;
     }
 
-    
+    .headline__card,
+    .default__news-header {
+        background-size: cover;
+        background-position: center;
+    }
+
+
+
+
     .default__news ul::-webkit-scrollbar {
         overflow-y: hidden;
         display: block;
