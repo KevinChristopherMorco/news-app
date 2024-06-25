@@ -22,7 +22,6 @@ export const fetchData = (e, userQuery, filter) => {
 
     locale = locale === null ? 'ph' : locale
     fetch(`https://newsdata.io/api/1/latest?apikey=pub_467909f9f75c0eac02b1dd15de92ddcfd29e4&country=${filter === undefined ? locale : filter}&language=en&q=${userQuery === undefined ? 'philippines' : userQuery}`).then(response =>{
-        console.log(`https://newsdata.io/api/1/latest?apikey=pub_467909f9f75c0eac02b1dd15de92ddcfd29e4&country=${filter === undefined ? locale : filter}&language=en&q=${userQuery === undefined ? 'philippines' : userQuery}`)
         if(response.status === 429){
             const mainContainer = document.querySelector('main')
             if (document.querySelector('.api__notice') != null) {

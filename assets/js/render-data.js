@@ -6,7 +6,6 @@ let defaultContainer
 let defaultCard
 
 export const renderData = (data) => {
-    console.log(data)
     headlineContainer = document.querySelector('.headline__card-container')
     headlineCard = document.querySelector('#headline__card')
     defaultContainer = document.querySelector('.default__news-container')

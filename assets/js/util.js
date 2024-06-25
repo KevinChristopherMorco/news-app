@@ -143,7 +143,6 @@ const arrows = (e) => {
             behavior: 'smooth'
         });
         currentIndex--;
-        console.log(currentIndex)
     }
 }
 arrowContainer.addEventListener('click', (e) => arrows(e))
