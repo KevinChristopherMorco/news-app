@@ -20,7 +20,7 @@ keywordInput.addEventListener('keydown', (e) => getSearchResults(e))
 
 export const handleURL = (e, currentURL, previousURL) => {
     console.log(currentURL, previousURL)
-    const resultURL = currentURL != '' ? currentURL : 'philippines'
+    const resultURL = currentURL != '' ||  currentURL != undefined ? currentURL : 'philippines'
     localStorage.setItem('currentURL', resultURL)
 
     localStorage.setItem('previousURL', previousURL === '' ? 'philippines' : previousURL)
@@ -33,10 +33,12 @@ export const handleURL = (e, currentURL, previousURL) => {
 export const getURL = (e) => {
     const userQuery = localStorage.getItem('currentURL')
     const defaultContainer = document.querySelector('.default__news-container')
-    console.log(userQuery)
+    const resultURL =   userQuery != null ? userQuery : localStorage.setItem('currentURL', 'philippines')
+
+    console.log(resultURL)
     Array.from(defaultContainer.children).forEach(x => {
         x.remove()
     })
-    fetchData(e, userQuery)
+    fetchData(e, resultURL)
 }
 window.addEventListener('load', (e) => getURL(e))

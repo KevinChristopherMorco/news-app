@@ -55,6 +55,10 @@ const choicesContainer = document.querySelector('.sort__choices')
 
 const setElementState = () => {
     const category = localStorage.getItem('activeCategory')
+    if(category === null){
+        categoryList.firstElementChild.classList.add('active') 
+        return;
+    }
 
     Array.from(categoryList.children).forEach(element => {
         element.classList.remove('active')
