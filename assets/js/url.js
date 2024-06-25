@@ -1,8 +1,6 @@
 import { keywordInput } from "./global-dom.js"
 import { fetchData } from "./fetch-api.js"
 
-
-
 const getSearchResults = (e) => {
     const defaultContainer = document.querySelector('.default__news-container')
     if (e.target.value === '') {
